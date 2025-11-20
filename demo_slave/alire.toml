@@ -1,0 +1,15 @@
+name = "demo_slave"
+description = "A simple LIN slave used as a demo for the adaLIN library"
+version = "0.1.0-dev"
+
+authors = ["Trevor R.H. Clarke"]
+maintainers = ["Trevor R.H. Clarke <trevor@notcows.com>"]
+maintainers-logins = ["tclarke"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = ["embedded", "linbus", "networking", "automotive", "example"]
+
+executables = ["demo_slave"]
+
+[[depends-on]]
+simple_logging = "^1.2.0"
