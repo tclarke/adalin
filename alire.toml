@@ -1,0 +1,10 @@
+name = "adalin"
+description = "LINbus 2.2 package for ada. Initiator and reponder."
+version = "0.1.0-dev"
+
+authors = ["Trevor R.H. Clarke"]
+maintainers = ["Trevor R.H. Clarke <trevor@notcows.com>"]
+maintainers-logins = ["tclarke"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = ["embedded", "linbus", "networking", "automotive"]
