@@ -13,3 +13,9 @@ executables = ["demo_slave"]
 
 [[depends-on]]
 simple_logging = "^1.2.0"
+
+[[depends-on]]
+adalin = "*"
+
+[[pins]]
+adalin = { path='..' }
