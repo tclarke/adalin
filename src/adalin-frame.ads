@@ -1,4 +1,4 @@
-package Adalin.Frame is
+package Adalin.Frame with SPARK_Mode => On is
 
       --  Basic types for adaLIN frames
       type Byte is mod 256;

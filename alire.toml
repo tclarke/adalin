@@ -8,3 +8,6 @@ maintainers-logins = ["tclarke"]
 licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
 website = ""
 tags = ["embedded", "linbus", "networking", "automotive"]
+
+[[depends-on]]
+gnatprove = "^15.1.0"

@@ -1,17 +1,24 @@
-package body Adalin.Frame is
+with Ada.Assertions;
+pragma Overflow_Mode (General => Strict, Assertions => Eliminated);
+package body Adalin.Frame with SPARK_Mode => On is
    function GetPID (F : Frame) return Byte is
    begin
       return Byte (F.frame_identifier) + Byte (F.parity) * 2**6;
    end GetPID;
 
    procedure Calculate_FID_Parity (F : in out Frame) is
+
       ID     : constant Bits6 := F.frame_identifier;
+      P0, P1 : Boolean;
+
       --  Helper to test bit N (0..5)
-      function Bit_Of (V : Bits6; N : Natural) return Boolean is
+      function Bit_Of (V : Bits6; N : Natural) return Boolean
+      with Pre => N < 6
+      is
       begin
          return (V and Bits6 (2**N)) /= 0;
       end Bit_Of;
-      P0, P1 : Boolean;
+
    begin
       P0 :=
         Bit_Of (ID, 0)
@@ -45,6 +52,7 @@ package body Adalin.Frame is
             sum := sum - 255;
          end if;
       end loop;
+      pragma Assert (sum <= 255);
 
       --  One's complement
       return not Byte (sum);
