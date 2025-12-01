@@ -1,11 +1,11 @@
 package body Adalin.Frame is
-   function GetPID (Self : Frame) return Byte is
+   function GetPID (F : Frame) return Byte is
    begin
-      return Byte (Self.frame_identifier) + Byte (Self.parity) * 2**6;
+      return Byte (F.frame_identifier) + Byte (F.parity) * 2**6;
    end GetPID;
 
-   procedure Calculate_FID_Parity (Self : in out Frame) is
-      ID     : constant Bits6 := Self.frame_identifier;
+   procedure Calculate_FID_Parity (F : in out Frame) is
+      ID     : constant Bits6 := F.frame_identifier;
       --  Helper to test bit N (0..5)
       function Bit_Of (V : Bits6; N : Natural) return Boolean is
       begin
@@ -24,42 +24,44 @@ package body Adalin.Frame is
         xor Bit_Of (ID, 4)
         xor Bit_Of (ID, 5));
 
-      Self.parity := Bits2 ((if P0 then 2 else 0) + (if P1 then 1 else 0));
+      F.parity := Bits2 ((if P0 then 2 else 0) + (if P1 then 1 else 0));
    end Calculate_FID_Parity;
 
-   procedure Calculate_Data_Checksum (Self : in out Frame;
-                                      mode : Mode_Type) is
+   --  Calculate the checksum for the data in the frame.
+   --  Per the spec, mode is set to Classic if FID is 0x3C or 0x3D.
+   function Calculate_Data_Checksum (F : Frame;
+                                     mode : Mode_Type) return Byte is
       sum : Integer := 0;
    begin
       if mode = Enhanced
-        and then (not (Self.frame_identifier in 16#3C# .. 16#3D#))
+        and then (not (F.frame_identifier in 16#3C# .. 16#3D#))
       then
-         sum := Integer (GetPID (Self));
+         sum := Integer (GetPID (F));
       end if;
 
-      for I in 1 .. Self.length loop
-         sum := sum + Integer (Self.data (I));
+      for I in 1 .. F.length loop
+         sum := sum + Integer (F.data (I));
          if sum > 255 then
             sum := sum - 255;
          end if;
       end loop;
 
       --  One's complement
-      Self.checksum := not Byte (sum);
+      return not Byte (sum);
    end Calculate_Data_Checksum;
 
-   procedure SetFrameIdentifier (Self : in out Frame; ID : Bits6) is
+   procedure SetFrameIdentifier (F : in out Frame; ID : Bits6) is
    begin
-      Self.frame_identifier := ID;
-      Calculate_FID_Parity (Self);
+      F.frame_identifier := ID;
+      Calculate_FID_Parity (F);
    end SetFrameIdentifier;
 
-   procedure SetData (Self : in out Frame; New_Data : Data_Array;
+   procedure SetData (F : in out Frame; New_Data : Data_Array;
       mode : Mode_Type) is
    begin
-      Self.length := New_Data'Length;
-      Self.data (1 .. New_Data'Length) := New_Data;
-      Calculate_Data_Checksum (Self, mode);
+      F.length := New_Data'Length;
+      F.data (1 .. New_Data'Length) := New_Data;
+      F.checksum := Calculate_Data_Checksum (F, mode);
    end SetData;
 
 end Adalin.Frame;

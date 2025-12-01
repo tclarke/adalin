@@ -1,5 +1,6 @@
 package Adalin.Frame is
 
+      --  Basic types for adaLIN frames
       type Byte is mod 256;
       for Byte'Size use 8;
 
@@ -9,10 +10,14 @@ package Adalin.Frame is
       type Bits2 is mod 4;
       for Bits2'Size use 2;
 
-      type Data_Array is array (Natural range <>) of aliased Byte;
+      --  Data array must be 1 to 8 bytes long
+      type Data_Array is array (Natural range <>) of Byte;
 
+      --  Mode type for checksum calculation.
       type Mode_Type is (Classic, Enhanced);
 
+      --  Frame record type. Packed so it can be directly copied to harware.
+      --  These shouldn't be modified directly, use the provided procedures.
       type Frame is record
          frame_identifier : aliased Bits6;
          parity           : aliased Bits2;
@@ -21,18 +26,16 @@ package Adalin.Frame is
          checksum         : aliased Byte;
       end record;
 
-      function GetPID (Self : Frame) return Byte;
+      --  Get the protected identifier (PID) from the frame
+      --  (combines the FID and parity).
+      function GetPID (F : Frame) return Byte;
 
-      procedure Calculate_FID_Parity (Self : in out Frame);
-
-      procedure Calculate_Data_Checksum (Self : in out Frame;
-         mode : Mode_Type)
-         with Pre => Self.length >= 1 and then Self.length <= 8;
-
-      procedure SetFrameIdentifier (Self : in out Frame; ID : Bits6)
+      --  Set the FID and calculate the parity bits.
+      procedure SetFrameIdentifier (F : in out Frame; ID : Bits6)
       with Pre => ID <= 63;
 
-      procedure SetData (Self : in out Frame; New_Data : Data_Array;
+      --  Set the data bytes and calculate the checksum.
+      procedure SetData (F : in out Frame; New_Data : Data_Array;
       mode : Mode_Type)
       with Pre => New_Data'Length >= 1 and then New_Data'Length <= 8;
 

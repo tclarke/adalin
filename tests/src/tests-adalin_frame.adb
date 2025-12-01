@@ -42,8 +42,7 @@ package body Tests.Adalin_Frame is
    begin
       --  Exhaustive test for IDs 0..63
       for Id in 0 .. 63 loop
-         F.frame_identifier := Adalin.Frame.Bits6 (Id);
-         Adalin.Frame.Calculate_FID_Parity (F);
+      	SetFrameIdentifier (F, Adalin.Frame.Bits6 (Id));
 
          AUnit.Assertions.Assert
            (Expected (Id) = F.parity,
