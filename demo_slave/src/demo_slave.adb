@@ -4,7 +4,7 @@ with Simple_Logging; use Simple_Logging;
 
 procedure Demo_Slave is
    demo_obj : aliased Demo_Slave_Type.Demo_Slave_Type;
-   slave_access : access Adalin.Slave.Slave'Class := demo_obj'Access;
+   slave_access : constant access Adalin.Slave.Slave'Class := demo_obj'Access;
 
    procedure critical is
       irq : constant Adalin.Slave.IrqState'Class

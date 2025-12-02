@@ -42,7 +42,7 @@ package body Tests.Adalin_Frame is
    begin
       --  Exhaustive test for IDs 0..63
       for Id in 0 .. 63 loop
-      	SetFrameIdentifier (F, Adalin.Frame.Bits6 (Id));
+         SetFrameIdentifier (F, Adalin.Frame.Bits6 (Id));
 
          AUnit.Assertions.Assert
            (Expected (Id) = F.parity,
@@ -63,7 +63,7 @@ package body Tests.Adalin_Frame is
       procedure run_test
         (mode : Mode_Type; ID : Bits6; data : Data_Array; expected : Byte) is
       begin
-      	SetFrameIdentifier (F, ID);
+         SetFrameIdentifier (F, ID);
          SetData (F, data, mode);
          AUnit.Assertions.Assert
            (F.checksum = expected,

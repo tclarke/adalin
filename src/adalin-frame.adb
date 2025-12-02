@@ -1,4 +1,3 @@
-with Ada.Assertions;
 pragma Overflow_Mode (General => Strict, Assertions => Eliminated);
 package body Adalin.Frame with SPARK_Mode => On is
    function GetPID (F : Frame) return Byte is
