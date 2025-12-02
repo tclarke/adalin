@@ -39,4 +39,9 @@ package Adalin.Frame with SPARK_Mode => On is
       mode : Mode_Type)
       with Pre => New_Data'Length >= 1 and then New_Data'Length <= 8;
 
+	private
+		procedure Calculate_FID_Parity (F : in out Frame);
+		function Calculate_Data_Checksum (F : Frame; mode : Mode_Type)
+			return Byte;
+
 end Adalin.Frame;
