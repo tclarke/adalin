@@ -11,3 +11,8 @@ tags = ["embedded", "linbus", "networking", "automotive"]
 
 [[depends-on]]
 gnatprove = "^15.1.0"
+
+[[actions]]
+type = "test"
+command = ["alr", "run"]
+directory = "tests"
