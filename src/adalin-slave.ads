@@ -8,10 +8,12 @@ package Adalin.Slave is
    --  to stay close to the C API.
    type Slave is abstract tagged null record;
 
+   type Reference is access Slave'Class;
+
    type IrqState is tagged null record;
 
    function sys_irq_disable (Self : in out Slave) return IrqState'Class is abstract;
    procedure sys_irq_restore (Self : in out Slave;
-		State : IrqState'Class) is abstract;
+      State : IrqState'Class) is abstract;
 
 end Adalin.Slave;
