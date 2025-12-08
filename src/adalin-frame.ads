@@ -1,4 +1,6 @@
-package Adalin.Frame with SPARK_Mode => On is
+package Adalin.Frame
+  with SPARK_Mode => On
+is
 
    --  Basic types for adaLIN frames
    type Byte is mod 256;
@@ -35,13 +37,11 @@ package Adalin.Frame with SPARK_Mode => On is
    with Pre => ID <= 63;
 
    --  Set the data bytes and calculate the checksum.
-   procedure SetData (F : in out Frame; New_Data : Data_Array;
-   mode : Mode_Type)
+   procedure SetData (F : in out Frame; New_Data : Data_Array; mode : Mode_Type)
    with Pre => New_Data'Length >= 1 and then New_Data'Length <= 8;
 
 private
    procedure Calculate_FID_Parity (F : in out Frame);
-   function Calculate_Data_Checksum (F : Frame; mode : Mode_Type)
-      return Byte;
+   function Calculate_Data_Checksum (F : Frame; mode : Mode_Type) return Byte;
 
 end Adalin.Frame;
