@@ -11,9 +11,6 @@ package Tests.Adalin_Core is
    overriding
    function Name (T : Test) return Message_String;
 
-   overriding
-   procedure Set_Up (T : in out Test);
-
    procedure Test_Driver_Management (T : in out Test_Case'Class);
    procedure Test_Signal (T : in out Test_Case'Class);
    procedure Test_Notification (T : in out Test_Case'Class);
