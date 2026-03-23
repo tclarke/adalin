@@ -1,4 +1,4 @@
-with AUnit.Assertions;
+with AUnit.Assertions; use AUnit.Assertions;
 with Adalin.Frame; use Adalin.Frame;
 with Interfaces; use Interfaces;
 
@@ -69,7 +69,7 @@ package body Tests.Adalin_Frame is
       begin
          SetFrameIdentifier (F, ID);
          SetData (F, data, data_length, mode);
-         AUnit.Assertions.Assert
+         Assert
            (F.checksum = expected,
             "Calculate_Data_Checksum ("
             & mode'Image
@@ -80,7 +80,6 @@ package body Tests.Adalin_Frame is
             & ", got "
             & F.checksum'Image);
       end run_test;
-      tmp : Byte;
    begin
       --  Classic
       --  From the LIN 2.1 specification

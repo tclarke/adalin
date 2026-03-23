@@ -16,6 +16,13 @@ package body Tests.Adalin_Core is
         (T,
          Tests.Adalin_Core.Test_Signal'Access,
          "Test signal interaction");
+      --  Missing registrations:
+      Register_Routine (T, Tests.Adalin_Core.Test_Notification'Access,
+         "Test notification");
+      Register_Routine (T, Tests.Adalin_Core.Test_Interface'Access,
+         "Test interface");
+      Register_Routine (T, Tests.Adalin_Core.Test_Interrupts'Access,
+         "Test interrupts");
    end Register_Tests;
 
    overriding
@@ -54,6 +61,7 @@ package body Tests.Adalin_Core is
       Adalin.l_sys_init;
    end Test_Driver_Management;
 
+   pragma Warnings (Off, "no assertions");  -- TODO: implement
    procedure Test_Signal (T : in out Test_Case'Class) is
       pragma Unreferenced (T);
 
@@ -61,11 +69,13 @@ package body Tests.Adalin_Core is
       null;
    end Test_Signal;
 
+   pragma Warnings (Off, "no assertions");  -- TODO: implement
    procedure Test_Notification (T : in out Test_Case'Class) is
    begin
       null;
    end Test_Notification;
 
+   pragma Warnings (Off, "no assertions");  -- TODO: implement
    procedure Test_Interface (T : in out Test_Case'Class) is
    begin
       null;
