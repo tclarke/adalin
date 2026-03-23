@@ -1,5 +1,6 @@
 package body Adalin is
    procedure l_sys_init is null;
+
    function l_rd (sig : l_signal_handle) return l_bool is
       pragma Unreferenced (sig);
    begin

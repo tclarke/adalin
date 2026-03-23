@@ -34,13 +34,13 @@ package Adalin is
    procedure l_sys_init;
 
    --  Signal interaction
-   --  Scalar and byte array signal read
+   --  Scalar and byte array signal read. Use array slices for partial reads.
    function l_rd (sig : l_signal_handle) return l_bool;
    function l_rd (sig : l_signal_handle) return l_u8;
    function l_rd (sig : l_signal_handle) return l_u16;
    function l_rd (sig : l_signal_handle) return l_byte_array;
 
-   --  Scalar and byte array signal write
+   --  Scalar and byte array signal write Use array slices for partial writes.
    procedure l_wr (sig : l_signal_handle; val : l_bool);
    procedure l_wr (sig : l_signal_handle; val : l_u8);
    procedure l_wr (sig : l_signal_handle; val : l_u16);
@@ -74,4 +74,5 @@ package Adalin is
       Import,
       Convention    => Ada,
       External_Name => "sys_irq_restore";
+	
 end Adalin;
