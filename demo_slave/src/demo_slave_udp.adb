@@ -136,10 +136,6 @@ package body Demo_Slave_UDP is
       Buf       : Frame_Buffer;
       Len       : Natural;
    begin
-      pragma Warnings (Off, "obsolescent");
-      GNAT.Sockets.Initialize;  --  required on Windows; no-op elsewhere
-      pragma Warnings (On, "obsolescent");
-
       Create_Socket (Sock, Family_Inet, Socket_Datagram);
       Set_Socket_Option
         (Sock, Socket_Level, (Name => Reuse_Address, Enabled => True));

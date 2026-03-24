@@ -143,7 +143,7 @@ private
 
    type Signal is record
       Handle  : l_signal_handle := 0;
-      Name    : Signal_Name     := (others => ' ');
+      Name    : Signal_Name     := [others => ' '];
       Value   : Value_Type;
       Size    : Signal_Size     := 1;
       Updated : Boolean         := False;

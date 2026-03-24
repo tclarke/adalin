@@ -44,7 +44,8 @@ is
       sum : Integer := 0;
    begin
       if mode = Enhanced and then
-               (not (F.frame_identifier in 16#3C# .. 16#3D#)) then
+               (not (F.frame_identifier in 16#3C# .. 16#3D#))
+      then
          sum := Integer (GetPID (F));
       end if;
 

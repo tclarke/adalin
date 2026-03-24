@@ -72,7 +72,7 @@ procedure Demo_Slave is
 
 begin
    --  ── Initialise ──────────────────────────────────────────────────────
-   Log ("Demo_Slave: initialising signal map");
+   Log ("Demo_Slave: initializing signal map");
    Initialize_Node;   --  registers all three entries with My_Node
 
    Log ("Demo_Slave: Is_Ready = " & My_Slave.Is_Ready (My_Node)'Image);

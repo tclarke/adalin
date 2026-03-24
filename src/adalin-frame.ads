@@ -23,7 +23,7 @@ is
    type Frame is record
       frame_identifier : aliased Bits6;
       parity           : aliased Bits2;
-      data             : Data_Array := (others => 0);
+      data             : Data_Array := [others => 0];
       length           : Data_Length;
       checksum         : aliased Byte;
    end record;
