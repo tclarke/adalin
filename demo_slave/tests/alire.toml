@@ -1,0 +1,16 @@
+name = "tests"
+description = "Adalin unit tests"
+version = "0.0.0"
+
+executables = ["adalin_tests"]
+
+[[depends-on]]
+aunit = "^25.0.0"
+gnatcov = "^22.0.1"
+adalin = "^0.1.0-dev"
+
+[[pins]]
+adalin = { path=".." }
+
+[build-profiles]
+adalin = "development"
