@@ -132,8 +132,8 @@ private
    --
    --  Signal_Map_Entry pairs a PID with an access to its Signal_Entry.
    --  Both components carry explicit defaults (PID => 0, Entry_Ptr => null),
-   --  so all Entries array elements are default-initialised automatically
-   --  per ARM 3.3.1(20): an array component is initialised when its element
+   --  so all Entries array elements are default-initialized automatically
+   --  per ARM 3.3.1(20): an array component is initialized when its element
    --  type has a default_expression for any subcomponent.
    ---------------------------------------------------------------------------
    type Signal_Map_Entry is record

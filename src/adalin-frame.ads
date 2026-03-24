@@ -8,8 +8,10 @@ is
    subtype Byte is Interfaces.Unsigned_8;
 
    type Bits6 is mod 2 ** 6;
+   for Bits6'Size use 6;
 
    type Bits2 is mod 2 ** 2;
+   for Bits2'Size use 2;
 
    subtype Data_Length is Natural range 1 .. 8;
    --  Data array must be 1 to 8 bytes long

@@ -25,16 +25,16 @@ package body Demo_Slave_UDP is
          Pos   := 0;
       end Put;
 
-      --  Return the next unconsumed byte.  Sets OK=False when empty.
-      procedure Next_Byte (B : out Unsigned_8; OK : out Boolean) is
+      --  Return the next unconsumed byte.  Sets Available=False when empty.
+      procedure Next_Byte (B : out Unsigned_8; Available : out Boolean) is
       begin
          if Pos < Count then
-            B   := Buf (Pos);
-            Pos := Pos + 1;
-            OK  := True;
+            B         := Buf (Pos);
+            Pos       := Pos + 1;
+            Available := True;
          else
-            B  := 0;
-            OK := False;
+            B         := 0;
+            Available := False;
          end if;
       end Next_Byte;
 

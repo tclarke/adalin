@@ -71,7 +71,7 @@ procedure Demo_Slave is
    end Critical_Update_Engine_Speed;
 
 begin
-   --  ── Initialise ──────────────────────────────────────────────────────
+   --  ── Initialize ──────────────────────────────────────────────────────
    Log ("Demo_Slave: initializing signal map");
    Initialize_Node;   --  registers all three entries with My_Node
 

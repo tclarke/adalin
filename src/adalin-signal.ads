@@ -80,7 +80,7 @@ is
    --  Return a new signal with the given handle, name, default value, and
    --  size.  The default value is itself constrained (via Mask_Bits or
    --  Trim_Bytes) so the stored value is always consistent with Size.
-   --  Is_Updated is initialised to False.
+   --  Is_Updated is initialized to False.
    function Make
      (Handle        : l_signal_handle;
       Name          : Signal_Name;

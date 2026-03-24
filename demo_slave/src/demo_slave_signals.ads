@@ -25,8 +25,8 @@ package Demo_Slave_Signals is
    package My_Slave is new Adalin.Slave (Capacity => 3);
 
    ---------------------------------------------------------------------------
-   --  2. Mask / trim helpers – expression functions so they are visible
-   --     during spec elaboration (signal object initialisers call Make,
+   --  2. Mask / trim helpers ï¿½ expression functions so they are visible
+   --     during spec elaboration (signal object initializers call Make,
    --     which calls Constrain, which dispatches to these functions).
    --
    --  l_u8 / l_u16 are signed range types; masking is done with mod.
