@@ -1,4 +1,5 @@
 with Interfaces;
+with Adalin.Signal;
 use type Interfaces.Unsigned_8;
 
 package Adalin is
@@ -75,6 +76,128 @@ package Adalin is
 
    --  True when Registered_Count = Capacity (map is fully populated).
    function Is_Ready (Map : Signal_Map) return Boolean;
+
+   ---------------------------------------------------------------------------
+   --  Mask / trim helpers for use as Adalin.Signal generic formal functions.
+   --
+   --  *_Mask    – scalar constraint: clears all bits at or above bit Bits.
+   --  *_Identity – scalar identity stub: returns V unchanged (required when
+   --               Trim_Bytes is not applicable for a scalar instantiation).
+   --  Array_Trim – array constraint: zero-fills elements at index >= Bytes.
+   --  Array_Identity – array identity stub: returns V unchanged (required
+   --               when Mask_Bits is not applicable for an array instantiation).
+   ---------------------------------------------------------------------------
+
+   function U8_Mask
+     (V : l_u8; Bits : Positive) return l_u8 is
+     (l_u8 (Integer (V) mod 2 ** Bits));
+
+   function U8_Identity
+     (V : l_u8; Unused_Bytes : Positive) return l_u8 is
+     (V);
+
+   function U16_Mask
+     (V : l_u16; Bits : Positive) return l_u16 is
+     (l_u16 (Integer (V) mod 2 ** Bits));
+
+   function U16_Identity
+     (V : l_u16; Unused_Bytes : Positive) return l_u16 is
+     (V);
+
+   --  Zero-fill elements at index >= Bytes; preserve [0 .. Bytes-1].
+   function Array_Trim
+     (V     : l_byte_array;
+      Bytes : Positive) return l_byte_array is
+     ([for I in l_array_index =>
+         (if Natural (I) < Bytes then V (I) else 0)]);
+
+   function Array_Identity
+     (V           : l_byte_array;
+      Unused_Bits : Positive) return l_byte_array is
+     (V);
+
+   ---------------------------------------------------------------------------
+   --  Adalin.Signal instantiations – one per concrete LIN value type.
+   --  These are library-level packages and may be used by any client
+   --  without re-instantiating Adalin.Signal themselves.
+   ---------------------------------------------------------------------------
+   package U8_Signal is new Adalin.Signal
+     (Value_Type    => l_u8,
+      Is_Array_Type => False,
+      Mask_Bits     => U8_Mask,
+      Trim_Bytes    => U8_Identity);
+
+   package U16_Signal is new Adalin.Signal
+     (Value_Type    => l_u16,
+      Is_Array_Type => False,
+      Mask_Bits     => U16_Mask,
+      Trim_Bytes    => U16_Identity);
+
+   package Arr_Signal is new Adalin.Signal
+     (Value_Type    => l_byte_array,
+      Is_Array_Type => True,
+      Mask_Bits     => Array_Identity,
+      Trim_Bytes    => Array_Trim);
+
+   ---------------------------------------------------------------------------
+   --  Concrete Signal_Entry wrapper types – one per instantiation above.
+   --  Derive from Signal_Entry (declared earlier in this package) and embed
+   --  the corresponding Signal ADT value.
+   ---------------------------------------------------------------------------
+
+   --  Wraps a U8_Signal.Signal; associated with an 8-bit scalar PID.
+   type U8_Signal_Entry is new Signal_Entry with record
+      PID : LIN_PID;
+      Sig : U8_Signal.Signal;
+   end record;
+
+   overriding function Get_PID
+     (E : U8_Signal_Entry) return LIN_PID;
+   overriding function Is_Updated
+     (E : U8_Signal_Entry) return Boolean;
+   overriding procedure Clear_Updated
+     (E : in out U8_Signal_Entry);
+
+   function  Get_Value
+     (E :        U8_Signal_Entry) return l_u8;
+   procedure Set_Value
+     (E : in out U8_Signal_Entry; Value : l_u8);
+
+   --  Wraps a U16_Signal.Signal; associated with a 16-bit scalar PID.
+   type U16_Signal_Entry is new Signal_Entry with record
+      PID : LIN_PID;
+      Sig : U16_Signal.Signal;
+   end record;
+
+   overriding function Get_PID
+     (E : U16_Signal_Entry) return LIN_PID;
+   overriding function Is_Updated
+     (E : U16_Signal_Entry) return Boolean;
+   overriding procedure Clear_Updated
+     (E : in out U16_Signal_Entry);
+
+   function  Get_Value
+     (E :        U16_Signal_Entry) return l_u16;
+   procedure Set_Value
+     (E : in out U16_Signal_Entry; Value : l_u16);
+
+   --  Wraps an Arr_Signal.Signal; associated with a byte-array PID.
+   type Arr_Signal_Entry is new Signal_Entry with record
+      PID : LIN_PID;
+      Sig : Arr_Signal.Signal;
+   end record;
+
+   overriding function Get_PID
+     (E : Arr_Signal_Entry) return LIN_PID;
+   overriding function Is_Updated
+     (E : Arr_Signal_Entry) return Boolean;
+   overriding procedure Clear_Updated
+     (E : in out Arr_Signal_Entry);
+
+   function  Get_Value
+     (E :        Arr_Signal_Entry) return l_byte_array;
+   procedure Set_Value
+     (E : in out Arr_Signal_Entry; Value : l_byte_array);
 
    ---------------------------------------------------------------------------
    --  Core API – driver and cluster management
