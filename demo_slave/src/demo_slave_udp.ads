@@ -54,7 +54,7 @@ package Demo_Slave_UDP is
 
       procedure Next_Byte
         (B  : out Interfaces.Unsigned_8;
-         OK : out Boolean);
+         Available : out Boolean);
 
       function Has_Data return Boolean;
 

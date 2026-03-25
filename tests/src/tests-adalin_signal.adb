@@ -125,7 +125,7 @@ package body Tests.Adalin_Signal is
 
    --  Build a 64-character signal name from a short string literal.
    function Pad (S : String) return Bool_Signals.Signal_Name is
-      Result : Bool_Signals.Signal_Name := (others => ' ');
+      Result : Bool_Signals.Signal_Name := [others => ' '];
    begin
       Result (1 .. S'Length) := S;
       return Result;
@@ -260,7 +260,7 @@ package body Tests.Adalin_Signal is
    procedure Test_Make_Byte_Array (T : in out Test_Case'Class) is
       pragma Unreferenced (T);
       N        : constant Array_Signals.Signal_Name := Pad ("DiagPayload");
-      Zero_Arr : constant l_byte_array := (others => 0);
+      Zero_Arr : constant l_byte_array := [others => 0];
       S        : constant Array_Signals.Signal :=
                    Array_Signals.Make
                      (Handle        => 7,
@@ -331,12 +331,12 @@ package body Tests.Adalin_Signal is
 
    procedure Test_Set_Value_Byte_Array (T : in out Test_Case'Class) is
       pragma Unreferenced (T);
-      Zero : constant l_byte_array := (others => 0);
+      Zero : constant l_byte_array := [others => 0];
       S    : Array_Signals.Signal :=
                Array_Signals.Make (5, Pad ("RawFrame"), Zero, 8);
       Data : constant l_byte_array :=
-               (16#01#, 16#02#, 16#03#, 16#04#,
-                16#05#, 16#06#, 16#07#, 16#08#);
+               [16#01#, 16#02#, 16#03#, 16#04#,
+                16#05#, 16#06#, 16#07#, 16#08#];
    begin
       Array_Signals.Set_Value (S, Data);
       Assert (Array_Signals.Get_Value (S) = Data,
@@ -385,15 +385,15 @@ package body Tests.Adalin_Signal is
    --  A 3-byte array signal. Writing 8 non-zero bytes must zero bytes 3-7.
    procedure Test_Mask_Byte_Array (T : in out Test_Case'Class) is
       pragma Unreferenced (T);
-      Zero   : constant l_byte_array := (others => 0);
+      Zero   : constant l_byte_array := [others => 0];
       S      : Array_Signals.Signal :=
                  Array_Signals.Make (13, Pad ("ThreeByteSig"), Zero, 3);
       Full   : constant l_byte_array :=
-                 (16#AA#, 16#BB#, 16#CC#, 16#DD#,
-                  16#EE#, 16#FF#, 16#11#, 16#22#);
+                 [16#AA#, 16#BB#, 16#CC#, 16#DD#,
+                  16#EE#, 16#FF#, 16#11#, 16#22#];
       --  Expected: first 3 bytes kept, rest zeroed.
       Expect : constant l_byte_array :=
-                 (16#AA#, 16#BB#, 16#CC#, 0, 0, 0, 0, 0);
+                 [16#AA#, 16#BB#, 16#CC#, 0, 0, 0, 0, 0];
    begin
       Assert (Array_Signals.Get_Size (S) = 3,
               "Mask_Array: size should be 3");
@@ -470,12 +470,12 @@ package body Tests.Adalin_Signal is
 
    procedure Test_Clear_Updated_Byte_Array (T : in out Test_Case'Class) is
       pragma Unreferenced (T);
-      Zero : constant l_byte_array := (others => 0);
+      Zero : constant l_byte_array := [others => 0];
       S    : Array_Signals.Signal :=
                Array_Signals.Make (9, Pad ("ConfigFrame"), Zero, 8);
       Data : constant l_byte_array :=
-               (16#AA#, 16#BB#, 16#CC#, 16#DD#,
-                16#EE#, 16#FF#, 16#11#, 16#22#);
+               [16#AA#, 16#BB#, 16#CC#, 16#DD#,
+                16#EE#, 16#FF#, 16#11#, 16#22#];
    begin
       Array_Signals.Set_Value (S, Data);
       Array_Signals.Clear_Updated (S);

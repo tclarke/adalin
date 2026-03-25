@@ -1,7 +1,7 @@
 --  Demo_Slave_Signals - body
 --
 --  Only Initialize_Node lives here; the Signal instantiations and
---  Signal_Entry primitives are defined in the Adalin package.
+--  Signal_Entry primitives are defined in the Adalin.Signals package.
 
 package body Demo_Slave_Signals is
 

@@ -11,6 +11,7 @@
 --  3. Expose My_Node : My_Slave.Slave_Node and Initialize_Node.
 
 with Adalin;
+with Adalin.Signals;
 with Adalin.Slave;
 
 package Demo_Slave_Signals is
@@ -24,31 +25,31 @@ package Demo_Slave_Signals is
    --  2. Static signal objects  (PIDs from illustrative LDF values)
    --
    --  U8_Signal_Entry, U16_Signal_Entry, and Arr_Signal_Entry are declared
-   --  in the Adalin package and used directly here.
+   --  in the Adalin.Signals package and used directly here.
    ---------------------------------------------------------------------------
 
    --  PID 0x21  EngineSpeed   - 8-bit scalar, 8 bits wide
-   Engine_Speed_Entry : aliased Adalin.U8_Signal_Entry :=
+   Engine_Speed_Entry : aliased Adalin.Signals.U8_Signal_Entry :=
      (PID => 16#21#,
-      Sig => Adalin.U8_Signal.Make
+      Sig => Adalin.Signals.U8_Signal.Make
                (Handle        => 0,
                 Name          => "EngineSpeed" & [12 .. 64 => ' '],
                 Default_Value => 0,
                 Size          => 8));
 
    --  PID 0x22  BatteryVoltage - 16-bit scalar, 16 bits wide
-   Battery_Voltage_Entry : aliased Adalin.U16_Signal_Entry :=
+   Battery_Voltage_Entry : aliased Adalin.Signals.U16_Signal_Entry :=
      (PID => 16#22#,
-      Sig => Adalin.U16_Signal.Make
+      Sig => Adalin.Signals.U16_Signal.Make
                (Handle        => 1,
                 Name          => "BatteryVoltage" & [15 .. 64 => ' '],
                 Default_Value => 0,
                 Size          => 16));
 
    --  PID 0x23  SensorBytes   - byte array, 4 active bytes
-   Sensor_Bytes_Entry : aliased Adalin.Arr_Signal_Entry :=
+   Sensor_Bytes_Entry : aliased Adalin.Signals.Arr_Signal_Entry :=
      (PID => 16#23#,
-      Sig => Adalin.Arr_Signal.Make
+      Sig => Adalin.Signals.Arr_Signal.Make
                (Handle        => 2,
                 Name          => "SensorBytes" & [12 .. 64 => ' '],
                 Default_Value => [others => 0],
