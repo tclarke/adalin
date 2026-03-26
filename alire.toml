@@ -13,6 +13,10 @@ tags = ["embedded", "linbus", "networking", "automotive"]
 gnatprove = "^15.1.0"
 
 [[actions]]
+type = "post-build"
+command = ["gnatprove", "-P", "adalin.gpr", "--level=0", "-j0"]
+
+[[actions]]
 type = "test"
 command = ["alr", "run"]
 directory = "tests"

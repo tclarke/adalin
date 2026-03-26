@@ -1,4 +1,4 @@
---  Adalin.Signals – Library-level Adalin.Signal instantiations and
+﻿--  Adalin.Signals – Library-level Adalin.Signal instantiations and
 --  concrete Signal_Entry wrapper types for the three standard LIN value
 --  types (l_u8, l_u16, l_byte_array).
 --
@@ -16,7 +16,10 @@
 
 with Adalin.Signal;
 
-package Adalin.Signals is
+package Adalin.Signals
+   with SPARK_Mode => On
+is
+   pragma Elaborate_Body;
 
    ---------------------------------------------------------------------------
    --  1. Adalin.Signal instantiations

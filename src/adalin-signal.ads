@@ -1,19 +1,19 @@
---  Adalin.Signal – Generic ADT for a single LIN signal.
+﻿--  Adalin.Signal - Generic ADT for a single LIN signal.
 --
 --  Each instantiation binds the signal to one concrete LIN data type:
---    • l_bool       (1-bit scalar)
---    • l_u8         (2-8 bit scalar)
---    • l_u16        (9-16 bit scalar)
---    • l_byte_array (1-8 byte array)
+--     l_bool       (1-bit scalar)
+--     l_u8         (2-8 bit scalar)
+--     l_u16        (9-16 bit scalar)
+--     l_byte_array (1-8 byte array)
 --
 --  Two generic formal functions handle the two fundamentally different
 --  size-constraint semantics:
 --
---    Mask_Bits  – used when Is_Array_Type = False (scalar signals).
+--    Mask_Bits  - used when Is_Array_Type = False (scalar signals).
 --                 Must return V with all bits at or above bit position
 --                 Bits cleared, e.g. V AND (2**Bits - 1).
 --
---    Trim_Bytes – used when Is_Array_Type = True (byte-array signals).
+--    Trim_Bytes - used when Is_Array_Type = True (byte-array signals).
 --                 Must return V with all elements at index >= Bytes
 --                 replaced by zero/default, preserving the first Bytes
 --                 elements unchanged.
@@ -33,7 +33,7 @@
 --       Trim_Bytes    => Array_Trim);
 --
 --  The "updated" flag mirrors the LIN sporadic/event-triggered frame concept
---  (LIN 2.2A spec §2.3.3.2-3): a signal is marked updated when written and
+--  (LIN 2.2A spec 2.3.3.2-3): a signal is marked updated when written and
 --  the flag is cleared by the driver once the frame has been transmitted.
 
 generic
@@ -69,7 +69,7 @@ is
    subtype Signal_Size is Positive range 1 .. 16;
 
    --  -----------------------------------------------------------------------
-   --  Signal ADT – private record; always manipulate via subprograms below.
+   --  Signal ADT - private record; always manipulate via subprograms below.
    --  -----------------------------------------------------------------------
    type Signal is private;
 
@@ -109,7 +109,7 @@ is
 
    --  True when the value has been written since the last Clear_Updated call.
    --  Mirrors the "updated signal" flag used by sporadic / event-triggered
-   --  frames (LIN 2.2A §2.3.3.2-3).
+   --  frames (LIN 2.2A 2.3.3.2-3).
    function Is_Updated (S : Signal) return Boolean;
 
    --  -----------------------------------------------------------------------
@@ -148,5 +148,14 @@ private
       Size    : Signal_Size     := 1;
       Updated : Boolean         := False;
    end record;
+
+   --  Expression-function completions: give SPARK full visibility into the
+   --  record fields so it can discharge postconditions on Make, Set_Value,
+   --  and Clear_Updated without any abstract model.
+   function Get_Handle (S : Signal) return l_signal_handle is (S.Handle);
+   function Get_Name   (S : Signal) return Signal_Name     is (S.Name);
+   function Get_Value  (S : Signal) return Value_Type      is (S.Value);
+   function Get_Size   (S : Signal) return Signal_Size     is (S.Size);
+   function Is_Updated (S : Signal) return Boolean         is (S.Updated);
 
 end Adalin.Signal;

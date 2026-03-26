@@ -1,0 +1,29 @@
+name: FlyerGPT
+version: 1.0.0
+schema: v1
+models:
+  - name: Claude Sonnet 4.6
+    provider: anthropic
+    model: claude-sonnet-4-6
+    parameters:
+      temperature: 0.7
+    apiBase: https://apim-n1ai-use2-flyer.azure-api.net/anthropic/v1
+    apiKey: 234d003b480f4508824f8cbe45c0b94f
+    roles:
+      - chat
+      - autocomplete
+      - embed
+      - edit
+      - apply
+      - summarize
+
+context:
+  - provider: file
+  - provider: code
+  - provider: diff
+  - provider: terminal
+  - provider: currentFile
+  - provider: problems
+rules:
+  - Give concise responses.
+  - Always use Ada 2022.
