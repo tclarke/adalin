@@ -1,7 +1,8 @@
---  Adalin.Signals – body
+﻿--  Adalin.Signals – body
 
-package body Adalin.Signals is
-
+package body Adalin.Signals
+   with SPARK_Mode => On
+is
    ---------------------------------------------------------------------------
    --  U8_Signal_Entry primitives
    ---------------------------------------------------------------------------

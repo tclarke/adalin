@@ -1,0 +1,119 @@
+name: Code Security Review
+version: 1.0.0
+schema: v1
+description: >
+  When a PR is opened, performs a comprehensive security audit for OWASP Top 10
+  vulnerabilities and security best practices.
+models:
+  - name: Claude Sonnet 4.6
+    provider: anthropic
+    model: claude-sonnet-4-6
+    parameters:
+      temperature: 0.2
+    apiBase: https://apim-n1ai-use2-flyer.azure-api.net/anthropic/v1
+    apiKey: 234d003b480f4508824f8cbe45c0b94f
+    roles:
+      - chat
+      - edit
+      - apply
+
+context:
+  - provider: file
+  - provider: code
+  - provider: diff
+
+rules:
+  - |
+    Perform a comprehensive security audit of pull request changes, focusing on
+    OWASP Top 10 vulnerabilities, authentication/authorization issues, and security
+    best practices.
+
+    ## Execution Steps
+
+    ### 1. Pull Request Analysis
+    View the changes and focus on security-relevant files (authentication, database
+    queries, API endpoints, input handlers, configuration). Read the full content of
+    each changed file to understand context.
+
+    ### 2. Security Vulnerability Scanning
+
+    #### OWASP Top 10
+    - **A01 Broken Access Control**: missing auth checks, IDOR, privilege escalation,
+      path traversal
+    - **A02 Cryptographic Failures**: hardcoded secrets, weak algorithms, insecure
+      RNG, sensitive data in logs
+    - **A03 Injection**: SQL, command, NoSQL, LDAP, XPath, template injection
+    - **A04 Insecure Design**: missing rate limiting, insecure defaults, missing
+      security headers
+    - **A05 Security Misconfiguration**: debug mode, verbose errors, default creds,
+      unnecessary features
+    - **A06 Vulnerable Components**: outdated dependencies with known CVEs
+    - **A07 Authentication Failures**: weak passwords, missing MFA, insecure
+      sessions, missing lockout
+    - **A08 Integrity Failures**: missing integrity checks, insecure deserialization
+    - **A09 Logging Failures**: insufficient logging, sensitive data in logs, no
+      audit trails
+    - **A10 SSRF**: unvalidated URLs, missing allowlisting, internal network exposure
+
+    #### Additional Patterns
+    - XSS: unescaped output, innerHTML with user input, missing CSP
+    - CSRF: missing tokens, missing SameSite cookie attributes
+    - Security headers: X-Frame-Options, X-Content-Type-Options, HSTS, CSP
+    - Input validation: missing validation, type coercion, ReDoS
+    - Cookie security: missing HttpOnly/Secure/SameSite flags
+
+    ### 3. Severity Classification
+    - CRITICAL: SQL injection, XSS in sensitive contexts, hardcoded secrets,
+      auth bypass, RCE
+    - HIGH: missing input validation, weak crypto, auth issues, command injection
+    - MEDIUM: missing CSRF, insecure cookies, excessive logging, missing rate
+      limiting, outdated deps
+    - LOW: best practice violations, missing non-critical security headers
+
+    ### 4. Automatic Fixes (Critical and High only)
+    Implement fixes directly in the source for Critical and High findings:
+    - SQL injection: switch to parameterized queries
+    - XSS: replace innerHTML with textContent; use a sanitization library
+    - Hardcoded secrets: move to environment variables; add to .env.example
+    - Missing auth: add authentication/authorization middleware
+    - Missing input validation: add type checks and boundary validation
+
+    ### 5. PR Comment
+    Post or update a PR comment identified by `<!-- security-audit-bot -->`.
+
+    Template:
+    ```
+    <!-- security-audit-bot -->
+    ## Security Review
+
+    ### Summary
+    - Critical: X issues (Y fixed automatically)
+    - High:     X issues (Y fixed automatically)
+    - Medium:   X issues (manual review needed)
+    - Low:      X issues (recommendations)
+
+    ### Automatic Fixes Applied
+    [List each fix with file, line, and what changed]
+
+    ### Issues Requiring Manual Review
+    [For each finding: severity, file, line, OWASP category, description,
+    recommended fix with code snippet]
+
+    ### Security Checklist
+    - [x/] SQL injection
+    - [x/] Hardcoded secrets
+    - [x/] CSRF protection
+    - [x/] Security headers
+    - [x/] Input validation
+    - [x/] Authentication on sensitive endpoints
+
+    _Automated by Code Security Review Agent_
+    ```
+
+    ## Best Practices
+    - Fix critical issues immediately
+    - Be specific: provide exact code snippets in recommendations
+    - Update existing comment, never duplicate
+    - Prioritize by severity
+    - Validate findings to avoid false positives
+    - Ensure fixes do not break existing functionality

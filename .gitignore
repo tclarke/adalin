@@ -2,4 +2,5 @@
 /lib/
 /alire/
 /config/
-/.continue/agents/new-config.yaml
+protocol_spec.txt
+api_spec.txt

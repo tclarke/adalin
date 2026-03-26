@@ -1,0 +1,30 @@
+name: agentsmd-updater
+version: 1.0.0
+schema: v1
+description: Updates AGENTS.md with new build steps, scripts, and configs
+models:
+  - name: Claude Sonnet 4.6
+    provider: anthropic
+    model: claude-sonnet-4-6
+    parameters:
+      temperature: 0.3
+    apiBase: https://apim-n1ai-use2-flyer.azure-api.net/anthropic/v1
+    apiKey: 234d003b480f4508824f8cbe45c0b94f
+    roles:
+      - chat
+      - edit
+      - apply
+
+context:
+  - provider: file
+  - provider: code
+  - provider: diff
+
+rules:
+  - You are maintaining the project's AGENTS.md file. Review the pull request and
+    identify new build steps, scripts, directory changes, dependencies, environment
+    variables, architectures, code style rules, or workflows that an AI coding agent
+    should know. Compare these findings with the existing AGENTS.md and update the
+    file so it stays accurate, complete, and practical for automated agents. Keep the
+    structure clean and keep explanations brief. If the file is missing you should
+    create one. Do not modify any other file.

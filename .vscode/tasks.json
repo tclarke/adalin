@@ -5,6 +5,23 @@
 			"type": "ada",
 			"command": "alr",
 			"options": {
+				"cwd": "${workspaceFolder}/tests"
+			},
+			"args": [
+				"run",
+			],
+			"problemMatcher": [
+				"$ada-error",
+				"$ada-warning",
+				"$ada-info"
+			],
+			"group": "test",
+			"label": "ada: Run unit tests"
+		},
+		{
+			"type": "ada",
+			"command": "alr",
+			"options": {
 				"cwd": "${workspaceFolder}/demo_slave"
 			},
 			"args": [

@@ -1,20 +1,19 @@
---  Adalin.Signal – body
+﻿--  Adalin.Signal - body
 
 package body Adalin.Signal
   with SPARK_Mode => On
 is
 
    --  Route to Mask_Bits (scalar) or Trim_Bytes (array) based on the
-   --  Is_Array_Type generic formal.  This is the single call-site used by
-   --  both Make and Set_Value so the dispatch logic lives in one place.
+   --  Is_Array_Type generic formal.  Declared as an expression function so
+   --  GNATprove can see through it when verifying postconditions on Make
+   --  and Set_Value.
+   --
+   --  The pragma Warnings suppresses the "statement has no effect" warning
+   --  that the compiler emits for the dead branch of the static Boolean
+   --  Is_Array_Type when the generic is instantiated with a fixed value.
    function Constrain (V : Value_Type; Size : Signal_Size) return Value_Type is
-   begin
-      if Is_Array_Type then
-         return Trim_Bytes (V, Size);
-      else
-         return Mask_Bits (V, Size);
-      end if;
-   end Constrain;
+     (if Is_Array_Type then Trim_Bytes (V, Size) else Mask_Bits (V, Size));
 
    function Make
      (Handle        : l_signal_handle;
@@ -29,31 +28,6 @@ is
                      Size    => Size,
                      Updated => False);
    end Make;
-
-   function Get_Handle (S : Signal) return l_signal_handle is
-   begin
-      return S.Handle;
-   end Get_Handle;
-
-   function Get_Name (S : Signal) return Signal_Name is
-   begin
-      return S.Name;
-   end Get_Name;
-
-   function Get_Value (S : Signal) return Value_Type is
-   begin
-      return S.Value;
-   end Get_Value;
-
-   function Get_Size (S : Signal) return Signal_Size is
-   begin
-      return S.Size;
-   end Get_Size;
-
-   function Is_Updated (S : Signal) return Boolean is
-   begin
-      return S.Updated;
-   end Is_Updated;
 
    procedure Set_Value (S : in out Signal; Value : Value_Type) is
    begin
