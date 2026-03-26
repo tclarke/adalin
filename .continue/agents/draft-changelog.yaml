@@ -1,0 +1,37 @@
+name: Draft Changelog Updates
+version: 1.0.0
+schema: v1
+description: Create a draft update to CHANGELOG.md from last 7 days of commits
+models:
+  - name: Claude Sonnet 4.6
+    provider: anthropic
+    model: claude-sonnet-4-6
+    parameters:
+      temperature: 0.3
+    apiBase: https://apim-n1ai-use2-flyer.azure-api.net/anthropic/v1
+    apiKey: 234d003b480f4508824f8cbe45c0b94f
+    roles:
+      - chat
+      - edit
+      - apply
+
+context:
+  - provider: file
+  - provider: code
+
+rules:
+  - |
+    Periodically update CHANGELOG.md with recent changes from git commits.
+
+    Instructions:
+    - Check if CHANGELOG.md exists in the repository.
+    - If it exists, check when it was last updated using git log on the file.
+    - Analyze git commits since the last update, up to the last 7 days
+      (maximum 20 commits).
+    - If it does not exist, analyze commits from the last 7 days (maximum 20
+      commits).
+    - Update or create CHANGELOG.md with relevant high-level features and bug
+      fixes.
+    - Keep the same level of detail and format as the existing file if present.
+    - Focus on user-facing changes, features, and important bug fixes.
+    - Open the result as a draft PR when complete.

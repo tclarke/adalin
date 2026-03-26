@@ -1,0 +1,44 @@
+name: Improve Test Coverage
+version: 1.0.0
+schema: v1
+description: Adds missing tests to improve coverage
+models:
+  - name: Claude Sonnet 4.6
+    provider: anthropic
+    model: claude-sonnet-4-6
+    parameters:
+      temperature: 0.4
+    apiBase: https://apim-n1ai-use2-flyer.azure-api.net/anthropic/v1
+    apiKey: 234d003b480f4508824f8cbe45c0b94f
+    roles:
+      - chat
+      - edit
+      - apply
+
+context:
+  - provider: file
+  - provider: code
+
+rules:
+  - |
+    Run tests for this repo with coverage reporting, then add missing tests to
+    improve coverage.
+
+    For this project:
+    - Run unit tests with `alr run` from the `tests/` directory.
+    - Coverage tooling is gnatcov (declared in tests/alire.toml).
+    - Test files live in `tests/src/` and follow the naming convention
+      `tests-<functionality>.adb/.ads`.
+    - Use the AUnit framework for all new tests.
+    - Each test case must be independent and not rely on state from other tests.
+    - Document each new test case with a comment explaining its purpose and
+      expected result.
+
+    Focus on:
+    - Unit and integration tests for library packages under `src/`.
+    - Critical paths: signal masking/trimming, frame construction, PID
+      calculation, checksum validation.
+    - Do not add tests for generated config files or test infrastructure itself.
+
+    After adding tests, run `alr run` from `tests/` again to confirm all new
+    tests pass before finishing.

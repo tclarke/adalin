@@ -1,0 +1,10 @@
+name: GitHub MCP
+version: 1.0.0
+schema: v1
+mcpServers:
+  - name: GitHub
+    command: npx
+    args:
+      - -y
+      - "@modelcontextprotocol/server-github"
+    env: {}
