@@ -1,18 +1,6 @@
-﻿--  Adalin.Signals – Library-level Adalin.Signal instantiations and
+﻿--  Adalin.Signals - Library-level Adalin.Signal instantiations and
 --  concrete Signal_Entry wrapper types for the three standard LIN value
 --  types (l_u8, l_u16, l_byte_array).
---
---  Placing these in a child package avoids the circular dependency that
---  would arise from withing Adalin.Signal inside adalin.ads itself (a
---  parent package may not with its own child).  As a child of Adalin,
---  this package has implicit visibility into all public declarations of
---  Adalin (l_u8, l_u16, l_byte_array, LIN_PID, Signal_Entry, and the
---  mask/trim helpers) without an explicit with clause.
---
---  Layout
---  ------
---  1. Adalin.Signal instantiations – one per concrete LIN value type.
---  2. Concrete Signal_Entry wrapper types – one per instantiation.
 
 with Adalin.Signal;
 
@@ -58,11 +46,17 @@ is
      (E : U8_Signal_Entry) return Boolean;
    overriding procedure Clear_Updated
      (E : in out U8_Signal_Entry);
+   overriding procedure Receive_Bytes
+     (E   : in out U8_Signal_Entry;
+      Buf : Raw_Frame_Bytes;
+      N   : Positive);
+   overriding procedure Transmit_Bytes
+     (E   : U8_Signal_Entry;
+      Buf : out Raw_Frame_Bytes;
+      N   : Positive);
 
-   function  Get_Value
-     (E :        U8_Signal_Entry) return l_u8;
-   procedure Set_Value
-     (E : in out U8_Signal_Entry; Value : l_u8);
+   function  Get_Value (E :        U8_Signal_Entry) return l_u8;
+   procedure Set_Value (E : in out U8_Signal_Entry; Value : l_u8);
 
    --  Wraps a U16_Signal.Signal; associated with a 16-bit scalar PID.
    type U16_Signal_Entry is new Signal_Entry with record
@@ -76,11 +70,17 @@ is
      (E : U16_Signal_Entry) return Boolean;
    overriding procedure Clear_Updated
      (E : in out U16_Signal_Entry);
+   overriding procedure Receive_Bytes
+     (E   : in out U16_Signal_Entry;
+      Buf : Raw_Frame_Bytes;
+      N   : Positive);
+   overriding procedure Transmit_Bytes
+     (E   : U16_Signal_Entry;
+      Buf : out Raw_Frame_Bytes;
+      N   : Positive);
 
-   function  Get_Value
-     (E :        U16_Signal_Entry) return l_u16;
-   procedure Set_Value
-     (E : in out U16_Signal_Entry; Value : l_u16);
+   function  Get_Value (E :        U16_Signal_Entry) return l_u16;
+   procedure Set_Value (E : in out U16_Signal_Entry; Value : l_u16);
 
    --  Wraps an Arr_Signal.Signal; associated with a byte-array PID.
    type Arr_Signal_Entry is new Signal_Entry with record
@@ -94,10 +94,16 @@ is
      (E : Arr_Signal_Entry) return Boolean;
    overriding procedure Clear_Updated
      (E : in out Arr_Signal_Entry);
+   overriding procedure Receive_Bytes
+     (E   : in out Arr_Signal_Entry;
+      Buf : Raw_Frame_Bytes;
+      N   : Positive);
+   overriding procedure Transmit_Bytes
+     (E   : Arr_Signal_Entry;
+      Buf : out Raw_Frame_Bytes;
+      N   : Positive);
 
-   function  Get_Value
-     (E :        Arr_Signal_Entry) return l_byte_array;
-   procedure Set_Value
-     (E : in out Arr_Signal_Entry; Value : l_byte_array);
+   function  Get_Value (E :        Arr_Signal_Entry) return l_byte_array;
+   procedure Set_Value (E : in out Arr_Signal_Entry; Value : l_byte_array);
 
 end Adalin.Signals;
