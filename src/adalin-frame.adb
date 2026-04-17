@@ -48,14 +48,18 @@ is
       then
          sum := Integer (GetPID (F));
       end if;
+      --  GetPID returns a Byte (0..255); the else branch leaves sum = 0.
+      --  Either way sum is in range before the loop, seeding the invariant.
+      pragma Assert (sum in 0 .. 255);
 
       for I in 1 .. F.length loop
          sum := sum + Integer (F.data (I));
          if sum > 255 then
             sum := sum - 255;
          end if;
+         pragma Loop_Invariant (sum in 0 .. 255);
       end loop;
-      pragma Assert (sum <= 255);
+      pragma Assert (sum in 0 .. 255);
 
       --  One's complement
       return not Byte (sum);
