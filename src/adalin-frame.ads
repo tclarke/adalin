@@ -45,6 +45,11 @@ is
 
 private
    procedure Calculate_FID_Parity (F : in out Frame);
-   function Calculate_Data_Checksum (F : Frame; mode : Mode_Type) return Byte;
+
+   --  Precondition: F.length must be within Data_Length's declared range
+   --  (1 .. 8) so the loop bound in the body is always valid and the
+   --  running sum can be proved to stay <= 255 under strict overflow mode.
+   function Calculate_Data_Checksum (F : Frame; mode : Mode_Type) return Byte
+     with Pre => F.length in Data_Length;
 
 end Adalin.Frame;
