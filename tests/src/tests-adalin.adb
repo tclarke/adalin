@@ -1,11 +1,13 @@
-with Tests.Adalin_Frame;
+﻿with Tests.Adalin_Frame;
 with Tests.Adalin_Core;
 with Tests.Adalin_Signal;
+with Tests.Adalin_Slave;
 
 package body Tests.Adalin is
    Frame  : aliased Tests.Adalin_Frame.Test;
    Core   : aliased Tests.Adalin_Core.Test;
    Signal : aliased Tests.Adalin_Signal.Test;
+   Slave  : aliased Tests.Adalin_Slave.Test;
 
    function Suite return Access_Test_Suite is
       Ret : constant Access_Test_Suite := new Test_Suite;
@@ -16,6 +18,8 @@ package body Tests.Adalin is
       Ret.Add_Test (Core'Access);
       Tests.Adalin_Signal.Register_Tests (Signal);
       Ret.Add_Test (Signal'Access);
+      Tests.Adalin_Slave.Register_Tests (Slave);
+      Ret.Add_Test (Slave'Access);
       return Ret;
    end Suite;
 
